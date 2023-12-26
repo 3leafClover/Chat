@@ -301,3 +301,28 @@ body{
     border-radius: 5px;
   }
   
+  .name-cont{
+    position: absolute;
+    font-family: sans-serif;
+    color: white;
+    right: 3%;
+    border-radius: 15px;
+    top: 135px;
+    background-color:#00093f;
+    height: 463px;
+    width: 15%;
+    padding: 15px;
+  }
+  .name-cont h3{
+    font-size: 25px;
+    text-align: center;
+    border-bottom: 1px solid white;
+  }
+  .group-cont p{
+    color: white;
+    border-left: solid 3px #409ad6;
+    border-radius: 5px;
+    background-color:#000d55;
+    padding: 9px;
+    margin: 5px;
+  }
