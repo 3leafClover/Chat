@@ -145,8 +145,8 @@ body{
     height: 10%;
   
     float: left;
-    border-bottom: 2px solid white;
-    background-color: Transparent;
+    background-color:#00093f;
+    border-radius: 15px;
   
     padding-left: 15px;
     padding-right: 15px;
