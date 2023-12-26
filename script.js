@@ -16,6 +16,7 @@ window.onload = function() {
   // This is very IMPORTANT!! We're going to use "db" a lot.
   var db = firebase.database()
   // We're going to use oBjEcT OrIeNtEd PrOgRaMmInG. Lol
+  
   class MEME_CHAT{
     // Home() is used to create the home page
     home(){
@@ -24,6 +25,10 @@ window.onload = function() {
       document.body.innerHTML = ''
       this.create_title()
       this.create_join_form()
+    }
+    playMessageSound() {
+      var audioElement = document.getElementById('messageSound');
+      audioElement.play();
     }
     // chat() is used to create the chat page
     chat(){
@@ -199,7 +204,7 @@ window.onload = function() {
       // After creating the chat. We immediatly create a loading circle in the 'chat_content_container'
       parent.create_load('chat_content_container')
       // then we "refresh" and get the chat data from Firebase
-      parent.refresh_chat()
+      parent.refresh_chat();
     }
     // Save name. It literally saves the name to localStorage
     save_name(name){
@@ -207,31 +212,38 @@ window.onload = function() {
       localStorage.setItem('name', name)
     }
     // Sends message/saves the message to firebase database
-    send_message(message){
-      var parent = this
-      // if the local storage name is null and there is no message
-      // then return/don't send the message. The user is somehow hacking
-      // to send messages. Or they just deleted the
-      // localstorage themselves. But hacking sounds cooler!!
-      if(parent.get_name() == null && message == null){
-        return
+    send_message(message) {
+      var parent = this;
+      if (parent.get_name() == null && message == null) {
+        return;
       }
-
-      // Get the firebase database value
-      db.ref('chats/').once('value', function(message_object) {
-        // This index is mortant. It will help organize the chat in order
-        var index = parseFloat(message_object.numChildren()) + 1
+    
+      var isImage = false;
+      if (message.startsWith('/image ')) {
+        isImage = true;
+        message = message.substring('/image '.length);
+      } else if (message.match(/\bhttps?:\/\/\S+\.(gif)\b/gi)) {
+        // Check if the message is a GIF link
+        isImage = true;
+      }
+    
+      db.ref('chats/').once('value', function (message_object) {
+        var index = parseFloat(message_object.numChildren()) + 1;
+        var messageType = isImage ? 'image' : 'text';
+    
         db.ref('chats/' + `message_${index}`).set({
           name: parent.get_name(),
           message: message,
+          type: messageType,
           index: index
-        })
-        .then(function(){
-          // After we send the chat refresh to get the new messages
-          parent.refresh_chat()
+        }).then(function () {
+          parent.refresh_chat();
+          parent.playMessageSound(); // Add this line to play the sound
+
         })
       })
     }
+    
     // Get name. Gets the username from localStorage
     get_name(){
       // Get the name from localstorage
@@ -287,6 +299,8 @@ window.onload = function() {
           })
         })
 
+        
+
         // Now we're done. Simply display the ordered messages
         ordered.forEach(function(data) {
           var name = data.name
@@ -325,6 +339,7 @@ window.onload = function() {
 
     }
   }
+  
   // So we've "built" our app. Let's make it work!!
   var app = new MEME_CHAT()
   // If we have a name stored in localStorage.
@@ -333,7 +348,7 @@ window.onload = function() {
   if(app.get_name() != null){
     app.chat()
   }
-  // Get the input field
+    // Get the input field
 var chat_input= document.getElementById("chat_input");
 
 // Execute a function when the user releases a key on the keyboard
