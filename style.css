@@ -17,6 +17,7 @@ body{
     box-sizing: border-box;
   }
   #title_container{
+    position: absolute;
     width: 100%;
     height: 225px;
   
@@ -24,10 +25,7 @@ body{
     justify-content: center;
     align-items: center;
   
-    background-color: #000d55;/*#467599;*/
-    border-bottom: 5px solid #fff;
-    box-shadow: 0 0 30px -18px #D64045;
-  
+    opacity: 0;
   }
   #title_inner_container{
     width: 100%;
@@ -114,13 +112,12 @@ body{
   
   #chat_container{
     width: 100%;
-    height: 450px;
+    height: 590px;
   
     display: flex;
     justify-content: center;
   
     float: left;
-    margin-top: 40px;
     /* Fade in container */
     animation: fadeIn 1s linear;
   
@@ -198,14 +195,21 @@ body{
   .message_container{
     width: 100%;
     display: inline-block;
-    margin-bottom: 20px;
-  
+    padding: 5px;
+    background:#000731;
+    margin-bottom: 6px;
+    border-radius: 5px;
+    padding-left: 9px;
+    padding-right: 9px;
+    border-left: 3px solid #409ad6;
   }
   .message_inner_container{
     width: 100%;
     display: inline-block;
   
     color: #1D3354;
+
+
   }
   .message_user_container{
     width: 100%;
@@ -219,7 +223,6 @@ body{
   .message_content_container{
     width: 100%;
     display: inline-block;
-  
     white-space: pre-wrap;
     word-wrap: break-word;
   }
