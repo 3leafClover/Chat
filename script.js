@@ -1,6 +1,8 @@
 // We enclose this in window.onload.
 // So we don't have ridiculous errors.
 window.onload = function() {
+
+  
   // Initialize Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCTEbevcryN7elI9cJnjpEmik9Wop-7osI",
@@ -331,4 +333,19 @@ window.onload = function() {
   if(app.get_name() != null){
     app.chat()
   }
+  // Get the input field
+var chat_input= document.getElementById("chat_input");
+
+// Execute a function when the user releases a key on the keyboard
+chat_input.addEventListener("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("chat_input_send").click();
+  }
+}); 
 }
+
+

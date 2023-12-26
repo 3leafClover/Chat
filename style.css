@@ -1,11 +1,12 @@
 body{
     /* https://www.color-hex.com/color/d3d3d3 */
-    background-color: #fff; /*#f6f6f6, EBEBD3, fafafa*/
+    background-color: #09001f; /*#f6f6f6, EBEBD3, fafafa*/
     font-family: Bungee Outline;
     font-weight: 900;
   
     overflow: hidden;
     animation: blur 0.5s ease-out;
+
   
   }
   *{
@@ -23,7 +24,7 @@ body{
     justify-content: center;
     align-items: center;
   
-    background-color: #409ad6;/*#467599;*/
+    background-color: #000d55;/*#467599;*/
     border-bottom: 5px solid #fff;
     box-shadow: 0 0 30px -18px #D64045;
   
@@ -45,6 +46,7 @@ body{
     font-size: 55px;
     letter-spacing: 2px;
     user-select: none;
+    font-family: sans-serif;
   }
   
   #join_container{
@@ -143,7 +145,7 @@ body{
     height: 10%;
   
     float: left;
-    border-bottom: 2px dashed #1D3354;
+    border-bottom: 2px solid white;
     background-color: Transparent;
   
     padding-left: 15px;
@@ -187,6 +189,7 @@ body{
   #chat_logout{
     color: #D64045;
     cursor: pointer;
+    background-color: #09001f;
   }
   #chat_logout:hover{
     text-decoration: underline;
@@ -210,6 +213,7 @@ body{
   .message_user{
     font-weight: bold;
     font-size: 14px;
+    color: #409ad6;
   }
   .message_content_container{
     width: 100%;
@@ -221,6 +225,7 @@ body{
   .message_content{
     font-weight: normal;
     font-size: 14px;
+    color: white;
     margin-top: 5px;
   }
   
@@ -253,10 +258,11 @@ body{
     height: 40px;
     animation: spin 1s linear infinite;
   
-    border-top: 6px solid #D64045;
-    border-bottom: 6px solid #1D3354;
+    border-top: 6px solid #432eff;
+    border-bottom: 6px solid #432eff;
     border-left: 6px solid #E9FFF9;
     border-right: 6px solid #E9FFF9;
+    box-shadow: #432eff 0px 0px 16px;
   }
   
   @keyframes spin {
@@ -281,11 +287,11 @@ body{
   }
   /* Track */
   ::-webkit-scrollbar-track {
-    background: white;
+    background: none;
   }
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: #D64045;
+    background: #432eff;
     border-radius: 5px;
   }
   
