@@ -24,6 +24,7 @@ body{
     justify-content: center;
     align-items: center;
   
+    background-color: #000d55;/*#467599;*/
     border-bottom: 5px solid #fff;
     box-shadow: 0 0 30px -18px #D64045;
   
@@ -109,16 +110,18 @@ body{
     font-weight: bold;
     text-align: center;
     color: #fff;
+    background-color: #000731;
   }
   
   #chat_container{
     width: 100%;
-    height: 490px;
+    height: 450px;
   
     display: flex;
     justify-content: center;
   
     float: left;
+    margin-top: 40px;
     /* Fade in container */
     animation: fadeIn 1s linear;
   
