@@ -46,23 +46,76 @@ window.onload = function() {
       var parent = this;
       var group_container = document.querySelector('.group-cont');
       var usernameElements = group_container.querySelectorAll('.user');
-  
+    
       // Check if the user is already in the list
       var userExists = Array.from(usernameElements).some(function (element) {
         return element.textContent === user;
       });
-  
+    
       if (!userExists) {
         var usernameElement = document.createElement('p');
         usernameElement.textContent = user;
         usernameElement.classList.add('user');
-  
+    
         group_container.appendChild(usernameElement);
+    
+        // Broadcast the updated name list
+        parent.broadcastNameList();
       }
-  
+    
       // Reset the timer when a message is sent
       parent.resetTimer(user);
     }
+    
+    // Add a new method to broadcast the name list
+    broadcastNameList() {
+      var parent = this;
+      var group_container = document.querySelector('.group-cont');
+      var usernameElements = group_container.querySelectorAll('.user');
+    
+      // Extract usernames from the elements
+      var usernames = Array.from(usernameElements).map(function (element) {
+        return element.textContent;
+      });
+    
+      // Broadcast the name list to other users
+      // Here, you need to implement a mechanism to send this list to other users
+      // using Firebase or any other appropriate method for your application
+      // For example, you can store the list in the database and have clients listen for changes
+      // and update their local name list accordingly.
+      // Alternatively, you can use a WebSocket for real-time communication between clients.
+    
+      // Example using Firebase to store the name list
+      db.ref('nameList').set(usernames);
+    }
+    
+    // In your constructor or initialization code, add a listener for changes in the name list
+
+    
+    listenForNameListChanges() {
+      var parent = this;
+    
+      // Example using Firebase to listen for changes in the name list
+      db.ref('nameList').on('value', function(snapshot) {
+        // Update the local name list when changes occur
+        parent.updateLocalNameList(snapshot.val());
+      });
+    }
+    
+    // Update the local name list based on the received data
+    updateLocalNameList(names) {
+      var group_container = document.querySelector('.group-cont');
+      group_container.innerHTML = ''; // Clear the existing list
+    
+      // Rebuild the list based on the received data
+      names.forEach(function (name) {
+        var usernameElement = document.createElement('p');
+        usernameElement.textContent = name;
+        usernameElement.classList.add('user');
+        group_container.appendChild(usernameElement);
+      });
+    }
+    
   
     removeUserFromList(user) {
       var parent = this;
