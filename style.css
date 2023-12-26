@@ -158,7 +158,7 @@ body{
     height: 100%;
     float: left;
     background-color: Transparent;
-    color: #1D3354;
+    color: #ffffff;
     font-size: 15px;
   }
   #chat_input_send{
@@ -190,6 +190,7 @@ body{
     color: #D64045;
     cursor: pointer;
     background-color: #09001f;
+    margin-top: 8px;
   }
   #chat_logout:hover{
     text-decoration: underline;
