@@ -35,6 +35,8 @@ window.onload = function() {
       this.create_title()
       this.create_chat()
     }
+    
+    
     // create_title() is used to create the title
     create_title(){
       // This is the title creator. 🎉
@@ -230,18 +232,19 @@ window.onload = function() {
       db.ref('chats/').once('value', function (message_object) {
         var index = parseFloat(message_object.numChildren()) + 1;
         var messageType = isImage ? 'image' : 'text';
-    
+      
         db.ref('chats/' + `message_${index}`).set({
           name: parent.get_name(),
           message: message,
           type: messageType,
           index: index
         }).then(function () {
+          // Set the sound trigger
+          db.ref('soundTrigger').set(true);
           parent.refresh_chat();
-          parent.playMessageSound(); // Add this line to play the sound
-
         })
       })
+      
     }
     
     // Get name. Gets the username from localStorage
@@ -256,11 +259,19 @@ window.onload = function() {
     }
     // Refresh chat gets the message/chat data from firebase
     refresh_chat(){
-      var chat_content_container = document.getElementById('chat_content_container')
-
+      var parent = this; // Store a reference to the current instance
+    
+      var chat_content_container = document.getElementById('chat_content_container');
+      db.ref('soundTrigger').on('value', function(snapshot) {
+        if (snapshot.val()) {
+          parent.playMessageSound();
+          // Reset the sound trigger to avoid repeated plays
+          db.ref('soundTrigger').set(false);
+        }
+      });
+    
       // Get the chats from firebase
       db.ref('chats/').on('value', function(messages_object) {
-        // When we get the data clear chat_content_container
         chat_content_container.innerHTML = ''
         // if there are no messages in the chat. Retrun . Don't load anything
         if(messages_object.numChildren() == 0){
@@ -298,7 +309,7 @@ window.onload = function() {
             }
           })
         })
-
+        
         
 
         // Now we're done. Simply display the ordered messages
@@ -335,9 +346,11 @@ window.onload = function() {
         });
         // Go to the recent message at the bottom of the container
         chat_content_container.scrollTop = chat_content_container.scrollHeight;
+        
     })
 
     }
+    
   }
   
   // So we've "built" our app. Let's make it work!!
