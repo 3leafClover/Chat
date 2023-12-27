@@ -191,41 +191,49 @@ window.onload = function() {
       localStorage.setItem('name', name)
     }
     // Sends message/saves the message to firebase database
+    // ...
     send_message(message) {
       var parent = this;
+
       if (parent.get_name() == null && message == null) {
         return;
       }
-    
-      var isImage = false;
-      if (message.startsWith('/image ')) {
-        isImage = true;
-        message = message.substring('/image '.length);
-      } else if (message.match(/\bhttps?:\/\/\S+\.(gif)\b/gi)) {
-        // Check if the message is a GIF link
-        isImage = true;
+
+      // Check if the message is a command
+      if (message.startsWith('/')) {
+        // Handle the command using the commands.js file
+        handleCommand(message, parent);
+      } else {
+        // Process regular messages
+        var isImage = false;
+        if (message.startsWith('/image ')) {
+          isImage = true;
+          message = message.substring('/image '.length);
+        } else if (message.match(/\bhttps?:\/\/\S+\.(gif)\b/gi)) {
+          // Check if the message is a GIF link
+          isImage = true;
+        }
+
+        db.ref('chats/').once('value', function (message_object) {
+          var index = parseFloat(message_object.numChildren()) + 1;
+          var messageType = isImage ? 'image' : 'text';
+
+          db.ref('chats/' + `message_${index}`).set({
+            name: parent.get_name(),
+            message: message,
+            type: messageType,
+            index: index
+          }).then(function () {
+            // Set the sound trigger
+            db.ref('soundTrigger').set(true);
+            parent.refresh_chat();
+            parent.playMessageSound(); // Add this line to play the sound
+          });
+        });
       }
-    
-      db.ref('chats/').once('value', function (message_object) {
-        var index = parseFloat(message_object.numChildren()) + 1;
-        var messageType = isImage ? 'image' : 'text';
-
-      
-        db.ref('chats/' + `message_${index}`).set({
-          name: parent.get_name(),
-          message: message,
-          type: messageType,
-          index: index
-        }).then(function () {
-          // Set the sound trigger
-          db.ref('soundTrigger').set(true);
-          parent.refresh_chat();
-          parent.playMessageSound(); // Add this line to play the sound
-
-        })
-      })
-
     }
+    // ...
+
 
     // Get name. Gets the username from localStorage
     get_name(){
@@ -325,23 +333,15 @@ window.onload = function() {
 
   }
 
-  // So we've "built" our app. Let's make it work!!
   var app = new MEME_CHAT()
-  // If we have a name stored in localStorage.
-  // Then use that name. Otherwise , if not.
-  // Go to home.
+
   if(app.get_name() != null){
     app.chat()
   }
-    // Get the input field
 var chat_input= document.getElementById("chat_input");
-// Execute a function when the user releases a key on the keyboard
 chat_input.addEventListener("keyup", function(event) {
-  // Number 13 is the "Enter" key on the keyboard
   if (event.keyCode === 13) {
-    // Cancel the default action, if needed
     event.preventDefault();
-    // Trigger the button element with a click
     document.getElementById("chat_input_send").click();
   }
 }); 
