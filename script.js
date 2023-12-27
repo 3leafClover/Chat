@@ -91,7 +91,6 @@ window.onload = function() {
     
     // In your constructor or initialization code, add a listener for changes in the name list
 
-    
     listenForNameListChanges() {
       var parent = this;
     
@@ -101,6 +100,7 @@ window.onload = function() {
         parent.updateLocalNameList(snapshot.val());
       });
     }
+    
     
     // Update the local name list based on the received data
     updateLocalNameList(names) {
@@ -283,7 +283,10 @@ window.onload = function() {
     
       var timestamp = firebase.database.ServerValue.TIMESTAMP;
     
-      db.ref('chats/').once('value', function(message_object) {
+      // Update the local name list immediately
+      parent.update_name_list(parent.get_name());
+    
+      db.ref('chats/').once('value', function (message_object) {
         var index = parseFloat(message_object.numChildren()) + 1;
         var messageType = isImage ? 'image' : 'text';
     
@@ -293,13 +296,17 @@ window.onload = function() {
           type: messageType,
           index: index,
           timestamp: timestamp
-        }).then(function() {
+        }).then(function () {
           db.ref('soundTrigger').set(true);
           parent.refresh_chat();
-          parent.update_name_list(parent.get_name());  // Call update_name_list here
+          
+          // Broadcast the updated name list to other users
+          parent.broadcastNameList();
         });
-      });
+      });    
     }
+    
+    
     
 
     get_name() {
